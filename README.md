@@ -1,5 +1,5 @@
-# Coursera-OpenCV-NumPy
-My progress through guided, introductory projects using OpenCV and NumPy
+# Coursera: OpenCV and NumPy
+My progress through the guided, introductory projects provided by Coursera using OpenCV and NumPy
 
 ## Project 1 - Analyzing Video with OpenCV and Numpy
 ### Task 1: Define a Generator for Reading a Video
@@ -67,6 +67,7 @@ This snippet of code is pretty interesting. By using the previous function, the 
 ```python
 plt.imshow(frame) # Display image
 ```
+![image](images/RGB-Image.png)
 
 (2.4) As mentioned earlier, OpenCV uses BGR formatting instead of RGB formatting. This causes the original frame to be plotted with tints of red in MATLAB.
 
@@ -78,12 +79,15 @@ plt.imshow(fix_frame) # Display image
 ```shell
 pixel at (0,0) [ 0 19 47]
 ```
+![image](images/BGR-Image.png)
+
 (3.1) The color convention can be changed to RGB using the shown function from the OpenCV library (cv2). This also reverses the previous color value array found at pixel (0,0) to change the format from BGR to RGB.
 
 ### Task 3.2 & 3.3: Cropping and Displaying
 ```python
 plt.imshow(fix_frame[240:480, 320:640]) # Crops video frame
 ```
+![image](images/Cropped-Image.png)
 
 (3.2) This line of code simply crops the frame by only displaying the pixels in the designated slice of the array. Simple enough.
 ```python
@@ -91,6 +95,7 @@ darker = 0.5 * fix_frame # Reduces all color values by 50%
 darker = darker.astype(np.uint8)
 plt.imshow(darker)
 ```
+![image](images/Darker-Image.png)
 
 (3.3) To change the image brightness, the original frame is just multiplied by a percentage constant. However, the variable needs to be converted back to the uint8 data type before displaying. 
 
@@ -106,6 +111,8 @@ cv2.circle(frame,
 fixed_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # Converts from BGR to RGB format
 plt.imshow(fixed_frame) # Displays frame
 ```
+![image](images/Circle-on-Frame.png)
+
 This snippet of code looks long, but really it's mostly just the basic attributes of the circle. Then the frame is displayed as normal.
 
 ### Task 4.2: Video Processing - Frame Counter
@@ -128,6 +135,8 @@ for frame in get_frames(VFILE):
     counter += 1
 cv2.destroyAllWindows()
 ```
+![image](images/Frame-Counter.png)
+
 Again, this block of code looks lengthy at first, but it's really straightforward the more I look at it. Using the get_frames function I wrote, every frame is processed and a Frame counter is added near the top right of the video.
 
 ### Task 5.1: Generating Video File
@@ -146,7 +155,7 @@ for frame in get_frames(VFILE):
                fontScale = 1,
                color = (0,255, 0),
                thickness = 1
-               ) # Places texxt on frame as "Frame 'counter'"
+               ) # Places text on frame as "Frame 'counter'"
     video_out.write(frame) # Write frame to output
     counter += 1
 video_out.release() # Release resources used to write video
@@ -185,5 +194,6 @@ collage = np.concatenate((row1,row2,row3), axis = 0)
 collage = cv2.cvtColor(collage, cv2.COLOR_BGR2RGB)
 plt.imshow(collage)
 ```
+![image](images/Collage.png)
 
 The block of codes takes the video and turns it into a collage of images from the video. The count is initially divided by 15 to split the collection of frames into 15 images. This is understandable as the code will take a total of 15 frames over the course of the entire video. Using modulus, these frame previews are evenly distributed throughout the video. Fortunately, NumPy makes the collage part easy by combining 5 frames for each row of the collage. Then, as usual, the collage can be displayed as a full image.
