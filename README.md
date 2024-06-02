@@ -153,3 +153,37 @@ video_out.release() # Release resources used to write video
 ```
 
 This block of code is just a recreation of the previous one. However, I can now save video files in an MP4 format by writing each frame into an output file. This will work great for any future video processing projects.
+
+### Task 5.2: Frame count
+```python
+video = cv2.VideoCapture(VFILE)
+count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+video.release()
+print('Frame Count',count)
+```
+```shell
+Frame Count 3597
+```
+
+Lucky for me, there is a function that returns the total frame count of the video. However, I could imagine that the frame count could also be obtained via the counter in the get_frames() loop.
+
+### Task 6: Creating a Collage
+```python
+skip_frames = count // 15  # Number of frames to skip before image capture
+
+frames = []
+counter = 0
+for f in get_frames(VFILE):
+    if counter % skip_frames == 0: # is true at intervals of skip_frames
+        frames.append(f) # Add frame to list
+    counter += 1
+
+row1 = np.concatenate(frames[0:5], axis = 1)
+row2 = np.concatenate(frames[5:10], axis = 1)
+row3 = np.concatenate(frames[10:15], axis = 1)
+collage = np.concatenate((row1,row2,row3), axis = 0)
+collage = cv2.cvtColor(collage, cv2.COLOR_BGR2RGB)
+plt.imshow(collage)
+```
+
+The block of codes takes the video and turns it into a collage of images from the video. The count is initially divided by 15 to split the collection of frames into 15 images. This is understandable as the code will take a total of 15 frames over the course of the entire video. Using modulus, these frame previews are evenly distributed throughout the video. Fortunately, NumPy makes the collage part easy by combining 5 frames for each row of the collage. Then, as usual, the collage can be displayed as a full image.
