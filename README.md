@@ -63,3 +63,34 @@ pixel at (150,75) [150 127  86]
 
 This snippet of code is pretty interesting. By using the previous function, the frame can be stored in a NumPy array. This array has data such as the shape of the video, aka the dimensions, and the color values of each pixel on the frame. I would assume that the color values were stored in RGB format, but it seems that OpenCV actually uses BGR instead.
 
+### Task 2.4 & 3.1: Displaying and Fixing an image
+```python
+plt.imshow(frame) # Display image
+```
+
+(2.4) As mentioned earlier, OpenCV uses BGR formatting instead of RGB formatting. This causes the original frame to be plotted with tints of red in MATLAB.
+
+```python
+fix_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # Change color convention
+print('pixel at (0,0)', fix_frame[0,0,:]) # Was [47 19 0]
+plt.imshow(fix_frame) # Display image
+```
+```shell
+pixel at (0,0) [ 0 19 47]
+```
+(3.1) The color convention can be changed to RGB using the shown function from the OpenCV library (cv2). This also reverses the previous color value array found at pixel (0,0) to change the format from BGR to RGB.
+
+### Task 3.2 & 3.3: Cropping and Displaying
+```python
+plt.imshow(fix_frame[240:480, 320:640]) # Crops video frame
+```
+
+(3.2) This line of code simply crops the frame by only displaying the pixels in the designated slice of the array. Simple enough.
+```python
+darker = 0.5 * fix_frame # Reduces all color values by 50%
+darker = darker.astype(np.uint8)
+plt.imshow(darker)
+```
+
+(3.3) To change the image brightness, the original frame is just multiplied by a percentage constant. However, the variable needs to be converted back to the uint8 data type before displaying. 
+
