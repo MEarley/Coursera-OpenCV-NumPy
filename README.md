@@ -48,3 +48,18 @@ def get_frame(filename,index):
 
 Pretty straightforward. The function is almost identical to that of Task 1. The only difference is that it's searching for one singular frame.
 
+### Task 2.3: Examining Pixels
+```python
+frame = get_frame(VFILE, 80)
+print('shape', frame.shape)
+print('pixel at (0,0)', frame[0,0,:])
+print('pixel at (150,75)', frame[150,75,:])
+```
+```shell
+shape (480, 640, 3)
+pixel at (0,0) [47 19  0]
+pixel at (150,75) [150 127  86]
+```
+
+This snippet of code is pretty interesting. By using the previous function, the frame can be stored in a NumPy array. This array has data such as the shape of the video, aka the dimensions, and the color values of each pixel on the frame. I would assume that the color values were stored in RGB format, but it seems that OpenCV actually uses BGR instead.
+
