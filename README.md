@@ -197,3 +197,31 @@ plt.imshow(collage)
 ![image](images/Collage.png)
 
 The block of codes takes the video and turns it into a collage of images from the video. The count is initially divided by 15 to split the collection of frames into 15 images. This is understandable as the code will take a total of 15 frames over the course of the entire video. Using modulus, these frame previews are evenly distributed throughout the video. Fortunately, NumPy makes the collage part easy by combining 5 frames for each row of the collage. Then, as usual, the collage can be displayed as a full image.
+
+## Personal Project - RGB to Black & White Video (Grayscale)
+Using what I learned from the guided project, I wanted to try to write a script that could take a colored video and turn it into a grayscale video.
+```python
+# Output video to disk
+fourcc = cv2.VideoWriter_fourcc('M','P','4','V') # MP4V Format Output
+video_out = cv2.VideoWriter("output.mp4",fourcc,FPS,RESOLUTION) # (filename,fourcc,frames per sec, resolution)
+
+for f in get_frames(VFILE):
+    if f is None:
+        break # End of Video
+        
+    # Convert frame
+    f = np.dot(f, np.array([0.114,0.5870,0.2989]))
+    f = f.astype(np.uint8) # Converting units back to uint8
+    
+    # Expand to 3-Channel Grayscale
+    f = np.repeat(np.expand_dims(f, axis=2), 3, axis=2)
+    
+    
+    video_out.write(f) # Write frame to output
+    
+video_out.release() # Release resources
+```
+
+I accomplished this by using luminance weights to change the color of each frame. I then saved all of these frames and produced a grayscale version of the original video.
+
+![image](images/Mario.gif) ![image](images/Mario-output.gif)
