@@ -299,6 +299,16 @@ view_image(magnitude / np.max(magnitude)) # Normalize image and display
 Sure enough, finding the magnitude of the image produces the combined result of both images.
 
 ### Task 3: Detect edges in an image
+```python
+# Pixels below 50 brightness are no longer considered edge pixels
+# Pixels above 150 brightness are certainly edge pixels
+edges = cv2.Canny(gray_image, 50, 150) # Edge-detection threshold
+view_image(edges)
+```
+![image](images/canny.png)
+
+Using the Canny() function provided by the OpenCV library, the x and y gradients can be used to further define the edges of an image. Values representing the brightness level for each pixel can be entered to filter out details in the image. Normally, the image will have every edge highlighted, but this is too much unnecessary data to process. So filtering out these "softer" edges can simplify the image more for use.
+
 ### Task 4: Recognize lines in an image
 ### Task 5: Recognize circles in an image
 
