@@ -1,7 +1,7 @@
 # Coursera: OpenCV and NumPy
 My progress through the guided, introductory projects provided by Coursera using OpenCV and NumPy
 
-## Project 1 - Analyzing Video with OpenCV and Numpy
+## Project 1 - [Analyzing Video with OpenCV and Numpy](https://www.coursera.org/projects/analyzing-video-opencv-numpy)
 ### Task 1: Define a Generator for Reading a Video
 ```python
 def get_frames(filename):
@@ -225,3 +225,38 @@ video_out.release() # Release resources
 I accomplished this by using luminance weights to change the color of each frame. I then saved all of these frames and produced a grayscale version of the original video.
 
 ![image](images/Mario.gif) ![image](images/Mario-output.gif)
+
+## Project 2 - [Recognizing Shapes in Images with OpenCV](https://www.coursera.org/projects/recognizing-shapes-images-opencv)
+
+### Task 1: Load an image from file
+The first task was to view an image file and read its contents.
+```python
+def view_image(image):
+    cv2.imshow('view',image) # Displays image
+    cv2.waitKey(0) # Wait until a key is pressed
+    cv2.destroyAllWindows() # Close image
+```
+
+The script is straightforward and looks familiar to the one used while displaying frames.
+
+```python
+image = cv2.imread(f) 
+view_image(image)
+
+print(image.shape) # (Rows, Columns,BGR-Value)
+print(image[0,0,:]) # BGR Value
+```
+```shell
+(640, 427, 3)
+[22 24  4]
+```
+![image](images/subway.jpg)
+
+Running the function of course displays the image. Interestingly but not shockingly, the image can also be stored similarly to frames. Data can also be read from images in the same matter. I imagine that manipulating the image contents will work the same way.
+
+### Task 2: Compute image gradients
+
+### Task 3: Detect edges in an image
+### Task 4: Recognize lines in an image
+### Task 5: Recognize circles in an image
+
