@@ -254,7 +254,49 @@ print(image[0,0,:]) # BGR Value
 
 Running the function of course displays the image. Interestingly but not shockingly, the image can also be stored similarly to frames. Data can also be read from images in the same matter. I imagine that manipulating the image contents will work the same way.
 
+```python
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # Convert to gray-scale
+print(gray_image.shape)
+print(gray_image[0,0])
+view_image(gray_image)
+```
+```shell
+(640, 427)
+18
+```
+![image](images/grayscale-subway.png)
+
+The image can be converted to gray-scale using the functions provided by the OpenCV. While working on the small personal project I previously mentioned, I had suspected that there was most likely a function that did what I was trying to do. However, the purpose of the project was to try and do most of it on my own rather than relying on the built-in functions provided. It was still enjoyable to do and a learning experience for me.
+
 ### Task 2: Compute image gradients
+```python
+# Takes gradient on the horizontal axis
+sobelx = cv2.Sobel(gray_image, cv2.CV_64F, 1, 0) # Finds the rate of change (derivative) of an image
+abs_sobelx = np.absolute(sobelx) # Obtain Magnitude of derivatives
+view_image(abs_sobelx / np.max(abs_sobelx)) # Normalize image and display
+```
+![image](images/x-gradient.png)
+
+After converting the images to a gray-scale, the next step of the script is to compute the gradients of the image. From my understanding, the derivative of the image is taken to highlight the areas of greatest change in an image. After normalization, the edges of the image can be seen clearly. I can already see how this preps things for edge-detection.
+
+```python
+# Takes gradient on the horizontal axis
+sobelx = cv2.Sobel(gray_image, cv2.CV_64F, 1, 0) # Finds the rate of change (derivative) of an image
+abs_sobelx = np.absolute(sobelx) # Obtain Magnitude of derivatives
+view_image(abs_sobelx / np.max(abs_sobelx)) # Normalize image and display
+```
+![image](images/y-gradient.png)
+
+In a similar fashion, the y-gradient of the image is also taken using the Sobel() function from the OpenCV library. Since the derivative is being taken on the vertical y-axis, edges that are parallel to the y-axis don't appear due to the rate of change being 0 (Black in color value). It's vice versa for the x-gradient. I assume that if we can combine the two, we can produce an image with all of the edges highlighted.
+
+```python
+# Combining both gradients
+magnitude = np.sqrt(sobelx**2 + sobely ** 2)
+view_image(magnitude / np.max(magnitude)) # Normalize image and display
+```
+![image](images/magnitude.png)
+
+Sure enough, finding the magnitude of the image produces the combined result of both images.
 
 ### Task 3: Detect edges in an image
 ### Task 4: Recognize lines in an image
