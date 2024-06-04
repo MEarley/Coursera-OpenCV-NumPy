@@ -310,5 +310,88 @@ view_image(edges)
 Using the Canny() function provided by the OpenCV library, the x and y gradients can be used to further define the edges of an image. Values representing the brightness level for each pixel can be entered to filter out details in the image. Normally, the image will have every edge highlighted, but this is too much unnecessary data to process. So filtering out these "softer" edges can simplify the image more for use.
 
 ### Task 4: Recognize lines in an image
+```python
+lines = cv2.HoughLinesP(
+            edges,
+            rho = 1,
+            theta = 1 * np.pi/180.0,
+            threshold = 20,
+            minLineLength = 25,
+            maxLineGap = 5,
+        ) # Use Hough's Theory to interpret lines
+image_lines = image.copy()
+for l in lines:
+    x1,y1,x2,y2 = l[0]
+    cv2.line(image_lines, (x1,y1),(x2,y2), (0,0,255), thickness = 3) # Red line on edges
+
+view_image(image_lines)  
+```
+![image](images/hough-lines.png)
+
+Using Hough's Theory, the lines of the image can be detected. Given the parameters, the OpenCV function for Hough's line detection method can list all of the detected lines and their coordinates in a given image. 
+
 ### Task 5: Recognize circles in an image
+```python
+circles = cv2.HoughCircles(
+            gray_image,
+            method = cv2.HOUGH_GRADIENT,
+            dp = 2,
+            minDist = 35,
+            param1 = 200,
+            param2 = 50,
+            minRadius = 15,
+            maxRadius = 25
+        )
+image_circles = image.copy()
+for x,y,r in circles[0]:
+    cv2.circle(
+        image_circles,
+        (x,y),
+        int(r),
+        (0,0,255),
+        thickness = 3
+        )
+view_image(image_circles)
+```
+![image](images/hough-circles.png)
+
+Using Hough's Theory again, a similar function from the OpenCV library was used to detect circles found in the image. By messing around with the circle-detection parameters, I was able to lower the amount of miscellaneous circles a bit. However, a good amount remains, so further measures will have to be used to filter out the "bad" circles.
+
+```python
+blurred_image = cv2.GaussianBlur(
+                    gray_image,
+                    ksize = (21,21),
+                    sigmaX = 0
+                    )
+view_image(blurred_image)
+```
+![image](images/hough-circles-bad.png)
+
+To improve the circle detection, the image is first blurred using the GaussianBlur() function from OpenCV. 
+
+```python
+circles = cv2.HoughCircles(
+            blurred_image,
+            method = cv2.HOUGH_GRADIENT,
+            dp = 2,
+            minDist = 35,
+            param1 = 150,
+            param2 = 40,
+            minRadius = 15,
+            maxRadius = 25
+        )
+image_circles = image.copy()
+for x,y,r in circles[0]:
+    cv2.circle(
+        image_circles,
+        (x,y),
+        int(r),
+        (0,0,255),
+        thickness = 3
+        )
+view_image(image_circles)
+```
+![image](images/hough-circles-good.png)
+
+Then, rather than the original gray-scaled image, a blurred, gray-scaled image is used instead to distinguish the circles in the image. I can see how blurring the image could improve the detection quality by blurring out the vague circles present in the original, highly-detailed image. 
 
