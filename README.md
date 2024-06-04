@@ -422,3 +422,44 @@ for f in get_frames(VFILE):
 video_out.release() # Release resources
 ```
 ![image](images/Mario.gif) ![image](images/Mario-gradient-output.gif)
+
+## Project 3 - (Tracking Objects in Video with Particle Filters)[https://www.coursera.org/projects/tracking-objects-video-particle-filter]
+
+### Task 1: Load video frames
+```python
+def get_frames(filename):
+    video = cv2.VideoCapture(filename) # Open Video
+    while video.isOpened():
+        retrieved, frame = video.read() # Read frames
+        if retrieved:
+            yield frame 
+        else:
+            break
+    video.release() # Video is closed, release resources
+    yield None
+
+def display(frame, particles, location):
+    if len(particles) > 0:
+        for i in range(NUM_PARTICLES):
+            x = int(particles[i,0])
+            y = int(particles[i,1])
+            cv2.circle(frame,(x,y),1,(0,255,0), 1)
+    if len(location) > 0:
+        cv2.circle(frame, location, 15, (0,0,255),5)
+    cv2.imshow('frame',frame)
+    if cv2.waitKey(30) == ESC_KEY: # Pause Video
+        if cv2.waitKey(0) == ESC_KEY: # Exit Video
+            return True
+            
+    return False
+```
+![image](images/walking.gif)
+
+The first few steps required obtaining and displaying the video as previously demonstrated. However, things are starting to get interesting as we make preparations for the motion-tracking circle that will be appended to the original video.
+
+### Task 2: Display video frames
+### Task 3: Initialize a particle filter
+### Task 4: Compute errors
+### Task 5: Compute weights and resample
+### Task 6: Apply noise
+### Task 7: Optimize the particle filter
