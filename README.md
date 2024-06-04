@@ -458,6 +458,47 @@ def display(frame, particles, location):
 The first few steps required obtaining and displaying the video as previously demonstrated. However, things are starting to get interesting as we make preparations for the motion-tracking circle that will be appended to the original video.
 
 ### Task 2: Display video frames
+```python
+NUM_PARTICLES = 5000
+VEL_RANGE = 0.5
+def initialize_particles():
+    particles = np.random.rand(NUM_PARTICLES,4) # 5000 Rows, 4 Columns, Number between 0 and 1
+    particles = particles * np.array((WIDTH,HEIGHT,VEL_RANGE,VEL_RANGE)) # Range of X, Y, and velocities for every particle
+    particles[:,2:4] -= VEL_RANGE/2.0 # Center Velocity at 0
+    print(particles[:20,:])
+    return particles
+
+def apply_velocity(particles):
+    particles[:,0] += particles[:,2]
+    particles[:,1] += particles[:,3]
+    return particles
+```
+```shell
+[[ 3.96243350e+02  2.90366883e+02  5.13816880e-02  2.24415915e-02]
+ [ 3.05878765e+02  2.62233010e+02 -3.12063944e-02  1.95886500e-01]
+ [ 6.95764513e+02  1.55677257e+02  1.45862519e-01  1.44474599e-02]
+ [ 4.10128173e+02  3.75792235e+02 -2.14481971e-01 -2.06435350e-01]
+ [ 1.45976830e+01  3.38043657e+02  1.39078375e-01  1.85006074e-01]
+ [ 7.06562443e+02  3.24458377e+02 -1.92603189e-02  1.40264588e-01]
+ [ 8.53941355e+01  2.59807935e+02 -1.78323356e-01  2.22334459e-01]
+ [ 3.76774488e+02  1.68352748e+02 -1.17722194e-01  1.37116845e-01]
+ [ 3.29340540e+02  2.30784183e+02 -2.40605100e-01  5.88177485e-02]
+ [ 4.41933112e+02  2.50475203e+02  2.21874039e-01  9.09101496e-02]
+ [ 2.59564704e+02  1.77434973e+02  9.88155980e-02 -2.19887264e-01]
+ [ 4.81405569e+02  2.72278975e+02 -1.44808719e-01 -1.85536851e-01]
+ [ 2.27739269e+02  1.47666573e+02  3.50983852e-02 -3.06992433e-02]
+ [ 7.13605911e+02  4.14301932e+01 -1.45561622e-01 -1.69345241e-01]
+ [ 4.71544211e+02  1.02836391e+02 -1.68446136e-02 -1.27787204e-01]
+ [ 1.14776039e+02  4.48123073e+01  7.81647947e-02 -1.80908524e-01]
+ [ 1.41932465e+02  1.49702419e+02  1.60496615e-01 -2.01449362e-01]
+ [ 6.04996223e+02  3.90159536e+01  2.38229733e-01 -1.56743992e-02]
+ [ 7.05221506e+02  2.45567281e+02  1.19631790e-01 -2.30406104e-01]
+ [ 2.04186627e+02  4.87998039e+01 -1.01929901e-01 -1.90636141e-01]]
+```
+![image](images/walking-particles.gif)
+
+Alongside displaying the contents of the video, applying particles to the video has also begun. Represented in green, particles are created and placed in random positions along the video. Each particle has a simple, directional velocity applied to it. Each particle has an X & Y velocity with a value between -0.25 and 0.25. This allows the particles to move in a set direction every frame.
+
 ### Task 3: Initialize a particle filter
 ### Task 4: Compute errors
 ### Task 5: Compute weights and resample
