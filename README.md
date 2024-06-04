@@ -353,7 +353,7 @@ for x,y,r in circles[0]:
         )
 view_image(image_circles)
 ```
-![image](images/hough-circles.png)
+![image](images/hough-circles-bad.png)
 
 Using Hough's Theory again, a similar function from the OpenCV library was used to detect circles found in the image. By messing around with the circle-detection parameters, I was able to lower the amount of miscellaneous circles a bit. However, a good amount remains, so further measures will have to be used to filter out the "bad" circles.
 
@@ -365,7 +365,7 @@ blurred_image = cv2.GaussianBlur(
                     )
 view_image(blurred_image)
 ```
-![image](images/hough-circles-bad.png)
+![image](images/blur-subway.png)
 
 To improve the circle detection, the image is first blurred using the GaussianBlur() function from OpenCV. 
 
@@ -393,5 +393,5 @@ view_image(image_circles)
 ```
 ![image](images/hough-circles-good.png)
 
-Then, rather than the original gray-scaled image, a blurred, gray-scaled image is used instead to distinguish the circles in the image. I can see how blurring the image could improve the detection quality by blurring out the vague circles present in the original, highly-detailed image. 
+Then, rather than the original gray-scaled image, a blurred, gray-scaled image is used instead to distinguish the circles in the image. I can see how blurring the image could improve the detection quality by blurring out the vague circles present in the original, highly detailed image. 
 
