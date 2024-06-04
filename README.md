@@ -198,7 +198,7 @@ plt.imshow(collage)
 
 The block of codes takes the video and turns it into a collage of images from the video. The count is initially divided by 15 to split the collection of frames into 15 images. This is understandable as the code will take a total of 15 frames over the course of the entire video. Using modulus, these frame previews are evenly distributed throughout the video. Fortunately, NumPy makes the collage part easy by combining 5 frames for each row of the collage. Then, as usual, the collage can be displayed as a full image.
 
-## Personal Project - RGB to Black & White Video (Grayscale)
+## Personal Mini-Project - RGB to Black & White Video (Grayscale)
 Using what I learned from the guided project, I wanted to try to write a script that could take a colored video and turn it into a grayscale video.
 ```python
 # Output video to disk
@@ -395,3 +395,30 @@ view_image(image_circles)
 
 Then, rather than the original gray-scaled image, a blurred, gray-scaled image is used instead to distinguish the circles in the image. I can see how blurring the image could improve the detection quality by blurring out the vague circles present in the original, highly detailed image. 
 
+## Personal Mini-Project 2 - RGB to X&Y Gradient
+Just for fun, I added some code to my gray-scale project that allowed RGB images to be converted to their respective gradients as well.
+```python
+# Output X & Y Gradient to disk (Not needed) 
+fourcc = cv2.VideoWriter_fourcc('M','P','4','V') # MP4V Format Output
+video_out = cv2.VideoWriter("XnY-gradient.mp4",fourcc,FPS,RESOLUTION) # (filename,fourcc,frames per sec, resolution)
+
+for f in get_frames(VFILE):
+    if f is None:
+        break # End of Video
+        
+    # Convert frame
+    gray_image = cv2.cvtColor(f, cv2.COLOR_BGR2GRAY)
+    sobelx = np.absolute(cv2.Sobel(gray_image, cv2.CV_64F,1,0)) # X-gradient
+    sobely = np.absolute(cv2.Sobel(gray_image, cv2.CV_64F,0,1)) # Y-gradient
+    magnitude = np.sqrt(sobelx**2 + sobely**2)
+    f = magnitude / np.max(magnitude)
+    f = (f*255).astype(np.uint8) # Increasing range from [0-1] to [0-255]
+    
+    # Expand to 3-Channel Grayscale
+    f = cv2.merge([f,f,f])
+    
+    video_out.write(f) # Write frame to output
+    
+video_out.release() # Release resources
+```
+![image](images/Mario.gif) ![image](images/Mario-gradient-output.gif)
