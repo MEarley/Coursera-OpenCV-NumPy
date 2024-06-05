@@ -579,3 +579,8 @@ def apply_noise(particles):
 By adding noise, the particles can track the object constantly without ever stopping. The displayed function uses a normal Gaussian distribution to distribute random values (or noise) to each particle's position and velocity. This makes it so that not every particle can retain 0 error and cause the program to crash. I like to think of it as a "genetic" mutation for each particle. While mutation allows adaptation in genetics, noise encourages continuous tracking for these particles.
 
 ### Task 7: Optimize the particle filter
+![image](images/walking-optimized.gif)
+
+The code can be further optimized by changing some of the parameters. Specifically, the total number of particles "NUM_PARTICLES" can be reduced in this example to the 100-150 range before particles begin losing track of the target. This can be especially useful for devices with lower computing power. Parameters such as the noise in velocity and position can also be changed to try and make up for loss of particles. Additionally, the tolerance level for color detection can be changed by raising the weight to higher powers. Higher exponents make for a stricter color match. 
+
+
