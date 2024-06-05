@@ -500,7 +500,31 @@ def apply_velocity(particles):
 Alongside displaying the contents of the video, applying particles to the video has also begun. Represented in green, particles are created and placed in random positions along the video. Each particle has a simple, directional velocity applied to it. Each particle has an X & Y velocity with a value between -0.25 and 0.25. This allows the particles to move in a set direction every frame.
 
 ### Task 3: Initialize a particle filter
+```python
+def enforce_edges(particles):
+    for i in range(NUM_PARTICLES):
+        particles[i,0] = min(WIDTH - 1, particles[i,0]) # Prevents x value from being greater than WIDTH
+        particles[i,1] = min(HEIGHT -1, particles[i,1]) # Prevents y value from being greater than HEIGHT 
+    return particles
+```
+
+By reinforcing the edges, particles will no longer be loss by going over the edge. This part of the guide started to get confusing in terms of readability. From my understanding, "particles" is a list that stores "particle(s)". Then, "particle(s)" is also a list, but stores the values of the "x_position", "y_position", "velocity_X", and "velocity_Y". It makes the code unclear, and I personally believe something such as a struct or class would have been better suited.
+
 ### Task 4: Compute errors
+```python
+TARGET_COLOR = np.array((156,74,38)) # BGR Color Value
+def compute_errors(particles, frame):
+    errors = np.zeros(NUM_PARTICLES)
+    for i in range(NUM_PARTICLES):
+        x = int(particles[i,0])
+        y = int(particles[i,1])
+        pixel_color = frame[y,x,:] # y,x, BGR
+        errors[i] = np.sum((TARGET_COLOR - pixel_color) ** 2) # Difference in color values
+    return errors
+```
+
+Now comes the computation of errors for the particles. The error is based on the difference in color values from the target color and color at the particle's current position. I assume that this will be further used in controlling the movement of each particle. Perhaps a pixel will slow down if it's on the target color, it's hard to say at the moment. However, It seems that the method of choice for object detection will heavily rely on solid colors and the random movement of particles. With enough particles on the screen, something is bound to run into the object and possible redirect other pixels as well.
+
 ### Task 5: Compute weights and resample
 ### Task 6: Apply noise
 ### Task 7: Optimize the particle filter
