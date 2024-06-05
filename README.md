@@ -526,5 +526,37 @@ def compute_errors(particles, frame):
 Now comes the computation of errors for the particles. The error is based on the difference in color values from the target color and color at the particle's current position. I assume that this will be further used in controlling the movement of each particle. Perhaps a pixel will slow down if it's on the target color, it's hard to say at the moment. However, It seems that the method of choice for object detection will heavily rely on solid colors and the random movement of particles. With enough particles on the screen, something is bound to run into the object and possible redirect other pixels as well.
 
 ### Task 5: Compute weights and resample
+```python
+def compute_weights(errors):
+    weights = np.max(errors) - errors # Invert errors (Highest error = Lowest Weight)
+    # Set edge particles weight to 0
+    weights[
+        (particles[:,0] == 0) |
+        (particles[:,0] == WIDTH-1) | 
+        (particles[:,1] == 0) |
+        (particles[:,1] == HEIGHT - 1)
+    ] = 0.0
+    return weights
+
+def resample(particles, weights):
+    probabilities = weights / np.sum(weights) # Normalize
+    
+    # New particles based on weights (High Weight = High Chance)
+    index_numbers = np.random.choice(
+        NUM_PARTICLES,
+        size = NUM_PARTICLES,
+        p=probabilities)
+    particles = particles[index_numbers,:] # Replace particles with chosen indices
+    
+    x = np.mean(particles[:,0])
+    y = np.mean(particles[:,1])
+    return particles, (int(x),int(y))
+```
+![image](images/crash-walk.png)
+
+By using the errors, the errors can be inverted to determine the weight of each particle. Immediately, the particles on the edge have their weight set to 0, which seems to be a "dead zone" for most particles. By normalizing the weights into probabilities, resampling can be done. All particles are then replaced by the indices that had the most probability. From my understanding, how this works is that essentially another array of "NUM_PARTICLES" length is created. For each position in this new list, particles with the highest weights have the highest chance of replacing said positions in the list. This gives you a new list of particles with multiple duplicates. By taking the average positions of all of these highly weighted particles, the position of the target can be determined.
+
+This method works up until the point where all particles have an error of 0 resulting in the probability being a factor of 0/0 causing the program to crash. However, the next task will fix this issue.
+
 ### Task 6: Apply noise
 ### Task 7: Optimize the particle filter
