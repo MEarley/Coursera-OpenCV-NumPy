@@ -423,7 +423,7 @@ video_out.release() # Release resources
 ```
 ![image](images/Mario.gif) ![image](images/Mario-gradient-output.gif)
 
-## Project 3 - (Tracking Objects in Video with Particle Filters)[https://www.coursera.org/projects/tracking-objects-video-particle-filter]
+## Project 3 - [Tracking Objects in Video with Particle Filters](https://www.coursera.org/projects/tracking-objects-video-particle-filter)
 
 ### Task 1: Load video frames
 ```python
