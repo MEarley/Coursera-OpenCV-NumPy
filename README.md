@@ -559,4 +559,23 @@ By using the errors, the errors can be inverted to determine the weight of each 
 This method works up until the point where all particles have an error of 0 resulting in the probability being a factor of 0/0 causing the program to crash. However, the next task will fix this issue.
 
 ### Task 6: Apply noise
+```python
+POS_SIGMA = 1.0
+VEL_SIGMA = 0.5
+def apply_noise(particles):
+    noise = np.concatenate(
+    (
+        np.random.normal(0.0,POS_SIGMA,(NUM_PARTICLES,1)), # X-position
+        np.random.normal(0.0,POS_SIGMA,(NUM_PARTICLES,1)), # Y-position
+        np.random.normal(0.0,VEL_SIGMA,(NUM_PARTICLES,1)), # X-Velocity
+        np.random.normal(0.0,VEL_SIGMA,(NUM_PARTICLES,1)), # Y-Velocity
+    ),
+    axis=1)
+    particles += noise
+    return particles
+```
+![image](images/walking-tracking.gif)
+
+By adding noise, the particles can track the object constantly without ever stopping. The displayed function uses a normal Gaussian distribution to distribute random values (or noise) to each particle's position and velocity. This makes it so that not every particle can retain 0 error and cause the program to crash. I like to think of it as a "genetic" mutation for each particle. While mutation allows adaptation in genetics, noise encourages continuous tracking for these particles.
+
 ### Task 7: Optimize the particle filter
